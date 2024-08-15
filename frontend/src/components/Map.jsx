@@ -1,13 +1,18 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import Typography from "@mui/material/Typography";
+import { MapContainer, TileLayer, Marker,useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-export default function Map({data}) {
+export default function Map({data, mapCenter}) {
+
+  const ChangeView = ({center}) => {
+    const map = useMap();
+    map.setView(center);
+    return null;
+  }
 
   return (
       <MapContainer
-        center={[32.6046754, 35.28808]}
-        zoom={2}
+        center={mapCenter}
+        zoom={5}
         style={{
           height: "30rem",
           width: "100%",
@@ -15,21 +20,22 @@ export default function Map({data}) {
           marginRight: "2rem",
         }}
       >
+        <ChangeView center={mapCenter}/>
         <TileLayer
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           attribution='&copy; <a href="https://www.esri.com/en-us/home">Esri</a> contributors'
         />
-        {/* {data &&
+        {data &&
           data.map((place) => (
             <Marker
               key={place._id}
-              position={[place.address]}
+              position={[place.lat,place.long]}
               eventHandlers={{
                 click: () => {
                 },
               }}
             />
-          ))} */}
+          ))}
       </MapContainer>
   );
 }

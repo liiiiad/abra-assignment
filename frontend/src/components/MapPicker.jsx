@@ -1,12 +1,12 @@
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const MapPicker = ({setLatitude,setLongitude,lat,long}) => {
+const MapPicker = ({setLat,setLong,lat,long}) => {
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
-        setLatitude(e.latlng.lat);
-        setLongitude(e.latlng.lng);
+        setLat(e.latlng.lat);
+        setLong(e.latlng.lng);
       },
     });
 

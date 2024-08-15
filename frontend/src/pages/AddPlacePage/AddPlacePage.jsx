@@ -7,32 +7,20 @@ import Paper from '@mui/material/Paper'
 import  CircularProgress  from "@mui/material/CircularProgress";
 import { useMutation } from "@tanstack/react-query";
 import { createPlace } from "../../utils/http";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MapPicker from "../../components/MapPicker";
-
-
-const types = [
-  {
-    key: 0,
-    value: "Restaurant",
-  },
-  {
-    key: 1,
-    value: "Hotel",
-  },
-  {
-    key: 2,
-    value: "Park",
-  },
-];
+import {types} from './util'
+import useReverseGeocoding from 'use-reverse-geocoding';
 
 export default function AddPlacePage() {
-
-    const [name,setName] = useState('');
-    const [address,setAddress] = useState('');
-    const [type,setType] = useState('');
-    const [lat,setLat] = useState('');
-    const [long,setLong] = useState('');
+  
+  const [name,setName] = useState('');
+  const [address,setAddress] = useState('');
+  const [type,setType] = useState('');
+  const [lat,setLat] = useState('');
+  const [long,setLong] = useState('');
+  
+    const nameError = name.length > 25;
 
     const { mutate, isPending } = useMutation({
         mutationFn: createPlace,
@@ -72,7 +60,7 @@ export default function AddPlacePage() {
         width='100%'
         justifyContent="center"
       >
-        <TextField size="small" id="name" label="Name" variant="outlined" sx={{width: '15rem'}} value={name} onChange={(e) => setName(e.target.value)}/>
+        <TextField size="small" id="name" label="Name" helperText={nameError ? 'Name must be shorter than 25 characters': ''} error={nameError} variant="outlined" sx={{width: '15rem'}} value={name} onChange={(e) => setName(e.target.value)}/>
         <TextField size="small" id="address" label="Address" variant="outlined"  sx={{width: '20rem'}} value={address} onChange={(e) => setAddress(e.target.value)}/>
         <TextField size="small" id="type" label="Type" defaultValue="" select variant="outlined"  sx={{width: '15rem'}} value={type} onChange={(e) => setType(e.target.value)}>
           {types.map((option) => (
@@ -86,7 +74,7 @@ export default function AddPlacePage() {
           ))}
         </TextField>
       </Box>
-      <MapPicker setLatitude={setLat} lat={lat} long={long} setLongitude={setLong}/>
+      <MapPicker setLat={setLat} lat={lat} long={long} setLong={setLong}/>
       </Box>
       <Box display='flex' justifyContent='right' gap={2}>
         {isPending && <CircularProgress />}

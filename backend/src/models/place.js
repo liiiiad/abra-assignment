@@ -7,6 +7,11 @@ const placeSchema = new mongoose.Schema(
       required: true,
       trim: true,
       capitalize: true,
+      validate(value){
+        if (value.length > 25){
+          throw new Error('Name must be shorter than  25 characters')
+        }
+      }
     },
     type: {
         type: String,
