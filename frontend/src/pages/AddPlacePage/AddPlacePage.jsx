@@ -8,6 +8,7 @@ import  CircularProgress  from "@mui/material/CircularProgress";
 import { useMutation } from "@tanstack/react-query";
 import { createPlace } from "../../utils/http";
 import { useState } from "react";
+import MapPicker from "../../components/MapPicker";
 
 
 const types = [
@@ -30,6 +31,8 @@ export default function AddPlacePage() {
     const [name,setName] = useState('');
     const [address,setAddress] = useState('');
     const [type,setType] = useState('');
+    const [lat,setLat] = useState('');
+    const [long,setLong] = useState('');
 
     const { mutate, isPending } = useMutation({
         mutationFn: createPlace,
@@ -49,7 +52,9 @@ export default function AddPlacePage() {
         const data = {
             name,
             address,
-            type
+            type,
+            lat,
+            long
         }
         mutate(data);
     }
@@ -59,6 +64,7 @@ export default function AddPlacePage() {
       <Typography variant="h6" paddingBottom={3} textAlign="left">
         Add a new place:
       </Typography>
+      <Box display='flex' justifyContent='space-between' p={2}>
       <Box
         display="flex"
         flexDirection="column"
@@ -79,6 +85,8 @@ export default function AddPlacePage() {
             </MenuItem>
           ))}
         </TextField>
+      </Box>
+      <MapPicker setLatitude={setLat} lat={lat} long={long} setLongitude={setLong}/>
       </Box>
       <Box display='flex' justifyContent='right' gap={2}>
         {isPending && <CircularProgress />}
