@@ -6,8 +6,6 @@ const createPlace = async (placeData) => {
 };
 
 const getPlaces = async (filter) => {
-    console.log(filter);
-    
     return await Place.find(filter);
   };
   
